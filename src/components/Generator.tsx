@@ -1,8 +1,10 @@
-import React from 'react';
+import SectionWrapper from "./SectionWrapper.tsx";
 
-function Generator(props) {
+function Generator() {
     return (
-        <div className='generator'>Gemeratpr</div>
+        <SectionWrapper header={"generate your workout"} title={['It\'s' , 'Huge' , 'o\'clock']}>
+            <div className='min-h-screen '>Generator</div>
+        </SectionWrapper>
     );
 }
 
