@@ -91,11 +91,13 @@ function Generator(prop: { ref: RefObject<HTMLDivElement | null> }) {
                                     </button>
                                 )
                                 // This code can cause a runtime error , so refactor it in the future .
-                            ) : Object.keys(WORKOUTS[poison]).map((value, key) => (
-                                <button onClick={() => {
-
-                                }} key={key}>
-                                    <p className={'uppercase hover:text-blue-400'}>{value}</p>
+                            ) : Object.keys(WORKOUTS[poison as keyof typeof WORKOUTS]).map((value, key) => (
+                                <button  className={' hover:text-blue-400 duration-200 ' + (muscles.includes(value) ? 'text-blue-400' : '')}
+                                         onClick={
+                                             () => {
+                                                 updateMuscle(value)
+                                             }} key={key}>
+                                    <p className={'uppercase'}>{value}</p>
                                 </button>
                             )))}
                         </div>
