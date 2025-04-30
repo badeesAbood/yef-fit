@@ -1,4 +1,5 @@
-function Hero() {
+function Hero(props: {scrollToGenerator: () => void }) {
+    const { scrollToGenerator } = props;
     return (
         <div
             className='min-h-screen flex flex-col gap-10 items-center justify-center text-center max-w-[800px] w-full mx-auto p-4'>
@@ -12,7 +13,7 @@ function Hero() {
                 the
                 local <span className='text-blue-400 font-medium'> mass montrosity</span>, afflicted with severe body
                 dismorphia, unable to fit through doors.</p>
-            <button className='px-8 py-4 rounded-md border-2 border-blue-400 border-solid bg-slate-950 blueShadow'>
+            <button onClick={scrollToGenerator} className='px-8 py-4 rounded-md border-2 border-blue-400 border-solid bg-slate-950 blueShadow'>
                 <p>Accept & Begin</p></button>
         </div>
     );
