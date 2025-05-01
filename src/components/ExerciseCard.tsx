@@ -12,7 +12,7 @@ function ExerciseCard(props: { exercise: GeneratedWorkout, index: number }) {
         <div className={'flex flex-col gap-4 p-4 bg-slate-950 rounded-md sm:flex-wrap'}>
             <div className={'flex flex-col sm:flex-row sm:items-center sm:flex-wrap sm:justify-between'}>
                 <h4 className={'hidden sm:inline text-slate-400 font-semibold sm:text-4xl md:text-5xl '}>0{index + 1}</h4>
-                <h2 className={'capitalize truncate sm:text-center max-w-full '}>{exercise.name.replaceAll('_' ,' ')}</h2>
+                <h2 className={'capitalize truncate sm:text-center max-w-full '}>{exercise.name.split('_').join(' ')}</h2>
                 <p className={'text-sm text-slate-400 capitalize'}>{exercise.type}</p>
             </div>
             <div>

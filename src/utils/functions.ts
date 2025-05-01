@@ -1,4 +1,5 @@
 
+
 import { EXERCISES, SCHEMES, TEMPOS, WORKOUTS } from "./swoldier";
 
 // Define types for the data structures used
@@ -56,6 +57,8 @@ export function generateWorkout(args: WorkoutArgs): GeneratedWorkout[] {
     if (workout === "individual") {
         listOfMuscles = muscles;
     } else {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         listOfMuscles = WORKOUTS[workout]?.[muscles[0]] || [];
     }
 
@@ -64,7 +67,7 @@ export function generateWorkout(args: WorkoutArgs): GeneratedWorkout[] {
     const scheme = goal;
 
     // Generate sets
-    const sets: Set[] = SCHEMES[scheme]?.ratio.flatMap((curr, index) => {
+    const sets: Set[] = SCHEMES[scheme as keyof typeof SCHEMES]?.ratio.flatMap((curr, index) => {
         return Array(curr).fill(index === 0 ? "compound" : "accessory").map((setType) => ({
             setType,
             muscleGroup: arrOfMuscles[index % arrOfMuscles.length],
@@ -126,11 +129,11 @@ export function generateWorkout(args: WorkoutArgs): GeneratedWorkout[] {
 
         let repsOrDuration =
             exercises[randomExercise]?.unit === "reps"
-                ? Math.min(...SCHEMES[scheme].repRanges) +
+                ? Math.min(...SCHEMES[scheme as keyof typeof SCHEMES].repRanges) +
                 Math.floor(
                     Math.random() *
-                    (Math.max(...SCHEMES[scheme].repRanges) -
-                        Math.min(...SCHEMES[scheme].repRanges))
+                    (Math.max(...SCHEMES[scheme as keyof typeof SCHEMES].repRanges) -
+                        Math.min(...SCHEMES[scheme as keyof typeof SCHEMES].repRanges))
                 ) +
                 (setType === "accessory" ? 4 : 0)
                 : Math.floor(Math.random() * 40) + 20;
@@ -154,7 +157,7 @@ export function generateWorkout(args: WorkoutArgs): GeneratedWorkout[] {
         return {
             name: randomExercise,
             tempo,
-            rest: SCHEMES[scheme]?.rest?.[setType === "compound" ? 0 : 1],
+            rest: SCHEMES[scheme as keyof typeof SCHEMES]?.rest?.[setType === "compound" ? 0 : 1],
             reps: repsOrDuration,
             ...exercises[randomExercise],
         };
@@ -175,6 +178,8 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 // Flatten exercises into a single-level object
+
+
 function exercisesFlattener(exercisesObj: Record<string, any>): Record<string, Exercise> {
     const flattenedObj: Record<string, Exercise> = {};
 
@@ -186,7 +191,7 @@ function exercisesFlattener(exercisesObj: Record<string, any>): Record<string, E
                 const variantName = `${variant}_${key}`;
                 const variantSubstitutes = Object.keys(val.variants)
                     .map((element) => `${element} ${key}`)
-                    .filter((element) => element.replaceAll(" ", "_") !== variantName);
+                    .filter((element) => element.split(" ").join("_") !== variantName);
 
                 flattenedObj[variantName] = {
                     ...val,
