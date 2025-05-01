@@ -1,24 +1,57 @@
 import Hero from "./components/Hero.tsx";
 import Generator from "./components/Generator.tsx";
 import Workout from "./components/Workout.tsx";
-import {useRef} from "react";
+import {useRef, useState} from "react";
+import {GeneratedWorkout, generateWorkout} from "./utils/functions.ts";
 
 function App() {
 
     const generatorRef = useRef<HTMLDivElement>(null);
+    const workoutRef = useRef<HTMLDivElement>(null);
 
     // Function to scroll to the "Generator" component
     const scrollToGenerator = () => {
-        generatorRef.current?.scrollIntoView({ behavior: 'smooth' });
+        generatorRef.current?.scrollIntoView({behavior: 'smooth'});
     };
 
+    const scrollToWorkout = () => {
+        workoutRef.current?.scrollIntoView({behavior: 'smooth'});
+    };
+
+
+    const [workout, setWorkout] = useState<GeneratedWorkout[] | null>(null)
+    const [poison, setPoison] = useState<string>('individual');
+    const [muscles, setMuscles] = useState<string[]>([]);
+    const [goal, setGoal] = useState<string>('strength_power');
+
+    function updateWorkout() {
+        if (muscles.length < 1) {
+            return
+        }
+        const workout = generateWorkout({muscles, poison, goal})
+        setWorkout(workout)
+        setTimeout(() => {
+            scrollToWorkout();
+        }, 300);
+    }
+
+
     return (
-    <main className='minh-screen flex flex-col bg-gradient-to-r from-slate-800 to-slate-950 text-white'>
-        <Hero scrollToGenerator={scrollToGenerator}/>
-        <Generator ref={generatorRef}/>
-        <Workout/>
-    </main>
-  )
+        <main className='minh-screen flex flex-col bg-gradient-to-r from-slate-800 to-slate-950 text-white'>
+            <Hero scrollToGenerator={scrollToGenerator}/>
+            <Generator
+                poison={poison}
+                muscles={muscles}
+                goal={goal}
+                formulate={updateWorkout}
+                setPoison={setPoison}
+                setMuscles={setMuscles}
+                setGoal={setGoal}
+                ref={generatorRef}
+            />
+            {workout && <Workout workout={workout} ref={workoutRef}/>}
+        </main>
+    )
 }
 
 export default App

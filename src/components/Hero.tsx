@@ -1,3 +1,5 @@
+import Button from "./Button.tsx";
+
 function Hero(props: {scrollToGenerator: () => void }) {
     const { scrollToGenerator } = props;
     return (
@@ -13,8 +15,7 @@ function Hero(props: {scrollToGenerator: () => void }) {
                 the
                 local <span className='text-blue-400 font-medium'> mass montrosity</span>, afflicted with severe body
                 dismorphia, unable to fit through doors.</p>
-            <button onClick={scrollToGenerator} className='px-8 py-4 rounded-md border-2 border-blue-400 border-solid bg-slate-950 blueShadow'>
-                <p>Accept & Begin</p></button>
+        <Button onClick={scrollToGenerator} title='Accept & Begin' />
         </div>
     );
 }
