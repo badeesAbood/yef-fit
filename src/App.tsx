@@ -2,7 +2,9 @@ import Hero from "./components/Hero.tsx";
 import Generator from "./components/Generator.tsx";
 import Workout from "./components/Workout.tsx";
 import {useRef, useState} from "react";
-import {GeneratedWorkout, generateWorkout} from "./utils/functions.ts";
+import {generateWorkout} from "./utils/functions.ts";
+import {formulate} from "./features/formulator/formulator.ts";
+import {useAppDispatch, useAppSelector} from "./hooks/redux_hooks.ts";
 
 function App() {
 
@@ -19,17 +21,21 @@ function App() {
     };
 
 
-    const [workout, setWorkout] = useState<GeneratedWorkout[] | null>(null)
     const [poison, setPoison] = useState<string>('individual');
     const [muscles, setMuscles] = useState<string[]>([]);
     const [goal, setGoal] = useState<string>('strength_power');
+    const workout = useAppSelector((state) => state.formulate.workout)
+
+    const dispatch = useAppDispatch();
 
     function updateWorkout() {
         if (muscles.length < 1) {
             return
         }
         const workout = generateWorkout({muscles, poison, goal})
-        setWorkout(workout)
+
+        dispatch(formulate(workout))
+
         setTimeout(() => {
             scrollToWorkout();
         }, 300);
